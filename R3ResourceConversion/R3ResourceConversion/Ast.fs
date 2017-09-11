@@ -223,9 +223,38 @@ type WindowStyle =
   | WS_VISIBLE = 26
   | WS_VSCROLL = 27
 
+type ExtendedWindowStyle = 
+  | WS_EX_ACCEPTFILES        = 1
+  | WS_EX_APPWINDOW          = 2
+  | WS_EX_CLIENTEDGE         = 3
+  | WS_EX_COMPOSITED         = 4
+  | WS_EX_CONTEXTHELP        = 5
+  | WS_EX_CONTROLPARENT      = 6
+  | WS_EX_DLGMODALFRAME      = 7
+  | WS_EX_LAYERED            = 8
+  | WS_EX_LAYOUTRTL          = 9
+  | WS_EX_LEFTSCROLLBAR      = 10
+  | WS_EX_LTRREADING         = 11
+  | WS_EX_MDICHILD           = 12
+  | WS_EX_NOACTIVATE         = 13
+  | WS_EX_NOINHERITLAYOUT    = 14
+  | WS_EX_NOPARENTNOTIFY     = 15
+  | WS_EX_NOREDIRECTIONBITMAP= 16
+  | WS_EX_OVERLAPPEDWINDOW   = 17
+  | WS_EX_PALETTEWINDOW      = 18
+  | WS_EX_RIGHT              = 19
+  | WS_EX_RIGHTSCROLLBAR     = 20
+  | WS_EX_RTLREADING         = 21
+  | WS_EX_STATICEDGE         = 22
+  | WS_EX_TOOLWINDOW = 23
+  | WS_EX_TOPMOST = 24
+  | WS_EX_TRANSPARENT = 25
+  | WS_EX_WINDOWEDGE = 26
+
 type Style = 
   | StaticStyle of StaticStyle
   | WindowStyle of WindowStyle
+  | ExtendedWindowStyle of ExtendedWindowStyle
   | EditControlStyles of EditControlStyles
   | UpDownControlStyle of UpDownControlStyle
   | ComboBoxStyles of ComboBoxStyles
@@ -256,22 +285,14 @@ type Control =
   | LISTBOX of ControlId * Coordinates * StyleNegated list option
   | Error
 
+//[<StructuredFormatDisplay("{StructuredFormatDisplay}")>]
 type Dialog = 
   | DIALOG of string * Control list
   | DIALOGEX of string * Control list
   | Error
-
-// You can define labels on their own line with a semicolon.
-type ResourceLine = Type of ControlType * int
-
-[<StructuredFormatDisplay("{StructuredFormatDisplay}")>]
-type Resource
-          = RString of string
-          | Type    of ControlType
-          | RInt of int
-         with
-            member private t.StructuredFormatDisplay =
-                match t with
-                | RString s -> box ("\"" + s + "\"")
-                | Type    t -> box t
-                | RInt    i -> box i
+  //with
+  //member private t.StructuredFormatDisplay =
+  //    match t with
+  //    | DIALOG (s,l) -> box ("\"" + s + "\"")
+  //    | DIALOGEX (s,l) -> box ("\"" + s + "\"")
+  //    | Error -> box ("ERROR")

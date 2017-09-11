@@ -28,12 +28,14 @@ let listBoxStyles : Parser<String, unit> list =
   Enum.GetNames(typeof<ListBoxStyles>) |> Array.map str |> Array.toList
 let dateTimeStyles : Parser<String, unit> list = 
   Enum.GetNames(typeof<DateTimeStyles>) |> Array.map str |> Array.toList
-
+let exWindowStyles : Parser<String, unit> list = 
+  Enum.GetNames(typeof<ExtendedWindowStyle>) |> Array.map str |> Array.toList
   
   
 // functions to get the Style DU from string
 // first get Enum then parse as specific enum, then create DU with it's constructor
 let getWindowStyleFromString x = Enum.Parse(typedefof<WindowStyle>, x) :?> WindowStyle |> (fun y -> WindowStyle(y))
+let getExWindowStyleFromString x = Enum.Parse(typedefof<ExtendedWindowStyle>, x) :?> ExtendedWindowStyle |> (fun y -> ExtendedWindowStyle(y))
 let getStaticStyleFromString x = Enum.Parse(typedefof<StaticStyle>, x) :?> StaticStyle |> (fun y -> StaticStyle(y))
 let getEditControlStyleFromString x = Enum.Parse(typedefof<EditControlStyles>, x) :?> EditControlStyles |> (fun y -> EditControlStyles(y))
 let getUpDownControlStyleFromString x = Enum.Parse(typedefof<UpDownControlStyle>, x) :?> UpDownControlStyle |> (fun y -> UpDownControlStyle(y))
@@ -46,6 +48,7 @@ let getDateTimeStyleFromString x = Enum.Parse(typedefof<DateTimeStyles>, x) :?> 
 
 let staticStyleChoices = choice staticStyles |>> getStaticStyleFromString
 let windowStyleChoices = choice windowStyles |>> getWindowStyleFromString
+let extendedWindowStyleChoices = choice exWindowStyles |>> getExWindowStyleFromString
 let editControlStyleChoices = choice editControlStyles |>> getEditControlStyleFromString
 let upDownControlStyleChoices = choice upDownControlStyles |>> getUpDownControlStyleFromString
 let comboBoxStyleChoices = choice comboBoxStyles |>> getComboBoxStyleFromString
@@ -62,6 +65,7 @@ let styleChoiceParser =
   <|> comboBoxStyleChoices <|> buttonStyleChoices
   <|> listViewStyleChoices <|> dialogStyleChoices
   <|> listboxStyleChoices <|> dateTimeStylesChoices
+  <|> extendedWindowStyleChoices
 
 let styleChoiceWithOptionalNot = pipe2 (opt (str "NOT ")) styleChoiceParser (fun x y -> 
   match x, y with
