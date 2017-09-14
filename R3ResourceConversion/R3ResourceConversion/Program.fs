@@ -1,7 +1,6 @@
 ﻿module Main
 
 open FParsec.CharParsers
-open Ast
 open Parser
 open System
 open XamlGeneration
@@ -21,10 +20,10 @@ let main(args: string[]) =
     match result with
     | Success (v, _, _) ->
         printf "The AST of the input file is:\n%A\n" v
+        v |> List.iter (saveToFile "output.txt") 
+        
     | Failure (msg, err, _) ->
         printfn "%s" msg
-
-    saveToFile "output.txt"
 
     Console.ReadKey() |> ignore
     0
