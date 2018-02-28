@@ -22,20 +22,11 @@ let getDocument (dialog : Dialog) =
         Some(
           XElement "TextBlock" [ 
             XAttribute "Text" text
-            XAttribute "Width" (coords.width* 2)
-            XAttribute "Height" (coords.height* 2)
-            XAttribute "Canvas.Left"( coords.x * 2)
-            XAttribute "Canvas.Top" (coords.y* 2)
-            XAttribute "FontSize" "12"
           ])
-      | EDITTEXT(_,coords,_) -> 
+      | EDITTEXT(id,coords,_) -> 
         Some(
           XElement "TextBox" [ 
-            XAttribute "Width" (coords.width* 2)
-            XAttribute "Height" (coords.height* 2)
-            XAttribute "Canvas.Left" (coords.x * 2)
-            XAttribute "Canvas.Top" (coords.y * 2)
-            XAttribute "FontSize" "12"
+            XAttribute "Name" ( id.Replace("IDC_", ""))
           ])
       | COMBOBOX(_,coords,_) -> 
         Some(
@@ -56,7 +47,7 @@ let getDocument (dialog : Dialog) =
       XElement "RowDefinition" [ XAttribute "Height" "40"]
     ]
   let gridElements = List.append [rowDefinitions] ltexts
-  let grid = XElement "Canvas" ltexts
+  let grid = XElement "StackPanel" ltexts
 
   let doc = 
     XDocument (XDeclaration "1.0" "UTF-8" "yes") [
